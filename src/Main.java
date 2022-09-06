@@ -3,7 +3,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Main {
-    public static final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
+    public static final String originalText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit," +
             " sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." +
             " Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris" +
             " nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in " +
@@ -12,24 +12,24 @@ public class Main {
             "culpa qui officia deserunt mollit anim id est laborum.";
 
     public static void main(String[] args) {
-        char[] symbols = text.toLowerCase(Locale.ROOT).toCharArray();
+        String text = originalText.toLowerCase(Locale.ROOT);
+
         Map<Character, Integer> map = new HashMap<>();
         //Если мин и макс значений будет несколько:
         Map<Character, Integer> maxPoints = new HashMap<>();
         Map<Character, Integer> minPoints = new HashMap<>();
 
         for (int i = 0; i < text.length(); i++) {
-            int value = 0;
-            for (int j = 0; j < text.length(); j++) {
-                if (symbols[i] == symbols[j]) {
-                    ++value;
-                }
-            }
-            if (symbols[i] != ' ') {
-                map.put(symbols[i], value);
-            }
 
+            if (map.containsKey(text.charAt(i))) {
+                int value = map.get(text.charAt(i)) + 1;
+                map.put(text.charAt(i), value);
+
+            } else if (Character.isLetter(text.charAt(i))) {
+                map.put(text.charAt(i), 1);
+            }
         }
+
         System.out.println(map);
         Map.Entry<Character, Integer> maxSymbol = getMaxSymbol(map, maxPoints);
         Map.Entry<Character, Integer> minSymbol = getMinSymbol(map, minPoints);
